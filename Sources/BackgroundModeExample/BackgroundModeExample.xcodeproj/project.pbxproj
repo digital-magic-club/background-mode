@@ -12,10 +12,10 @@
 		2EDB00BD2B0FC188001341F0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB00BC2B0FC188001341F0 /* ContentView.swift */; };
 		2EDB00BF2B0FC188001341F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EDB00BE2B0FC188001341F0 /* Assets.xcassets */; };
 		2EDB00C22B0FC188001341F0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EDB00C12B0FC188001341F0 /* Preview Assets.xcassets */; };
-		2EE33A882B10CE5B00DC3418 /* CardPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 2EE33A872B10CE5B00DC3418 /* CardPicker */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2EB3E80F2D344B60003C6EFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2EDB00B72B0FC188001341F0 /* BackgroundModeExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BackgroundModeExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EDB00BA2B0FC188001341F0 /* BackgroundModeExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModeExampleApp.swift; sourceTree = "<group>"; };
 		2EDB00BC2B0FC188001341F0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -28,7 +28,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2EE33A882B10CE5B00DC3418 /* CardPicker in Frameworks */,
 				2EB3E80E2D344416003C6EFF /* BackgroundMode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,6 +54,7 @@
 		2EDB00B92B0FC188001341F0 /* BackgroundModeExample */ = {
 			isa = PBXGroup;
 			children = (
+				2EB3E80F2D344B60003C6EFF /* Info.plist */,
 				2EDB00BA2B0FC188001341F0 /* BackgroundModeExampleApp.swift */,
 				2EDB00BC2B0FC188001341F0 /* ContentView.swift */,
 				2EDB00BE2B0FC188001341F0 /* Assets.xcassets */,
@@ -88,7 +88,6 @@
 			);
 			name = BackgroundModeExample;
 			packageProductDependencies = (
-				2EE33A872B10CE5B00DC3418 /* CardPicker */,
 				2EB3E80D2D344416003C6EFF /* BackgroundMode */,
 			);
 			productName = CardPickerExample;
@@ -287,6 +286,7 @@
 				DEVELOPMENT_TEAM = 9E43V6CC9L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BackgroundModeExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -317,6 +317,7 @@
 				DEVELOPMENT_TEAM = 9E43V6CC9L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BackgroundModeExample/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -370,10 +371,6 @@
 		2EB3E80D2D344416003C6EFF /* BackgroundMode */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BackgroundMode;
-		};
-		2EE33A872B10CE5B00DC3418 /* CardPicker */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CardPicker;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

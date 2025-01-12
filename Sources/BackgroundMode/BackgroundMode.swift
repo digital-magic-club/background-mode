@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 typealias BackgroundTaskName = String
 
@@ -16,6 +17,7 @@ public final class BackgroundMode: NSObject {
   private let defaultTaskName: BackgroundTaskName = "backgroundPrivateTask"
   private var defaultTaskCount = 0
   private var defaultTaskRefreshTimer: Timer?
+  private var audioPlayer: AVAudioPlayer?
 
   public static let shared = BackgroundMode()
 
@@ -26,6 +28,19 @@ public final class BackgroundMode: NSObject {
       }
 
       keepAlive ? startBackgroundProcesses() : stopBackgroundProcesses()
+    }
+  }
+
+  // To enable / disable the console logs
+  public var verbose = true
+
+  // Playing a background sound will make sure the app can't be killed by iOS
+  // Disabling the sound (a "tick" every ~15s) will not assure this framework keeps working as expected!
+  public var playSound = true {
+    didSet {
+      if keepAlive {
+        playSound ? startBackgroundSound() : stopBackgroundSound()
+      }
     }
   }
 
@@ -46,13 +61,17 @@ private extension BackgroundMode {
   }
 
   func start(_ name: BackgroundTaskName, expirationHandler: (() -> Void)? = nil) {
-    tasks[name] = UIApplication.shared.beginBackgroundTask(withName: name) {
-      print("Oh no: \(name) has been killed!")
+    tasks[name] = UIApplication.shared.beginBackgroundTask(withName: name) { [weak self] in
+      if self?.verbose == true {
+        print("Oh no: \(name) has been killed!")
+      }
       expirationHandler?()
     }
 
-    print("Started \(name)")
-    print("Remaining time for background tasks: \(UIApplication.shared.backgroundTimeRemaining)")
+    if verbose {
+      print("Started \(name)")
+      print("Remaining time for background tasks: \(UIApplication.shared.backgroundTimeRemaining)")
+    }
   }
 
   func stop(_ name: BackgroundTaskName) {
@@ -61,7 +80,9 @@ private extension BackgroundMode {
     }
 
     UIApplication.shared.endBackgroundTask(id)
-    print("Ended \(name) with success!")
+    if verbose {
+      print("Ended \(name) with success!")
+    }
 
     tasks.removeValue(forKey: name)
   }
@@ -76,10 +97,12 @@ private extension BackgroundMode {
 
   func startBackgroundProcesses() {
     startEndlessBackgroundTask()
+    startBackgroundSound()
   }
 
   func stopBackgroundProcesses() {
     stopEndlessBackgroundTask()
+    stopBackgroundSound()
   }
 
   func startEndlessBackgroundTask() {
@@ -89,7 +112,9 @@ private extension BackgroundMode {
 
     self.createNewDefaultBackgroundTask()
 
-    print("Started preventing from sleeping")
+    if verbose {
+      print("Started preventing from sleeping")
+    }
   }
 
   func createNewDefaultBackgroundTask() {
@@ -108,6 +133,57 @@ private extension BackgroundMode {
     stop(defaultTaskName + String(defaultTaskCount))
     defaultTaskCount = 0
 
-    print("Stopped preventing from sleeping")
+    if verbose {
+      print("Stopped preventing from sleeping")
+    }
   }
+
+  private func startBackgroundSound() {
+    guard let url = Bundle.module.url(forResource: "22kHz__15_second_Tone", withExtension: "mp3") else {
+      if verbose {
+        print("Couldn't find background sound file")
+      }
+      return
+    }
+
+    do {
+      try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .mixWithOthers)
+      try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+
+      audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+    } catch let error {
+      if verbose {
+        print("Error while starting background sound: \(error.localizedDescription)")
+      }
+    }
+
+    guard let player = audioPlayer else {
+      if verbose {
+        print("Trying to start background sound but no player found")
+      }
+      return
+    }
+
+    player.numberOfLoops = -1
+    player.play()
+
+    if verbose {
+      print("Playing background sound")
+    }
+  }
+
+  private func stopBackgroundSound() {
+    guard let player = audioPlayer else {
+      if verbose {
+        print("Trying to stop background sound but no player found")
+      }
+      return
+    }
+
+    player.stop()
+    if verbose {
+      print("Stopped background sound")
+    }
+  }
+
 }
