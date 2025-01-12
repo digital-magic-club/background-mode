@@ -22,33 +22,12 @@ dependencies: [
 ```
 
 Also, you need to tick the Audio background mode from your App's target `Signing & Capabilities` menu:
-
+<img src="https://voila-magic.com/wp-content/uploads/2025/01/Screenshot-2025-01-12-at-19.56.47.png" alt="Signing & Capabilities screenshot" width="240"/>
 
 ## Usage
 
 1. Import the `BackgroundMode` package: `import BackgroundMode`
 1. Toggle the `BackgroundMode.shared.keepAlive` to keep your app from working in background or not.
-
-```
-import CardPicker
-
-struct ContentView: View {
-  @State private var card: Card?
-
-  var body: some View {
-    NavigationStack {
-      VStack {
-        NavigationLink("Card Picker", destination: CardPickerView(card: $card))
-
-        if let card {
-          Text(card.description)
-        }
-      }
-      .padding()
-    }
-  }
-}
-```
 
 ## Credits
 
